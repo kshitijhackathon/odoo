@@ -1,193 +1,255 @@
 import { useState } from "react";
 import { useRoute, Link } from "wouter";
-import { ArrowLeft, Bell, Share2, MapPin, Clock, User, ArrowUp } from "lucide-react";
-import { Header } from "@/components/layout/header";
-import { IssueTimeline } from "@/components/issues/issue-timeline";
-import { CommentsSection } from "@/components/issues/comments-section";
+import { ArrowLeft, Edit, Trash2, Share2, Flag, Clock, MapPin, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { mockIssues, mockUsers, mockComments, mockStatusHistory, getCategoryIcon, getStatusColor, formatTimeAgo } from "@/lib/mock-data";
+import { Card, CardContent } from "@/components/ui/card";
+import { mockIssues, mockUsers, getStatusColor, formatTimeAgo, getCategoryIcon } from "@/lib/mock-data";
+import { useToastNotifications } from "@/hooks/use-toast-notifications";
+
+// Mock activity data
+const generateActivityTimeline = (issueId: string) => {
+  return [
+    {
+      id: "1",
+      date: "Jun 02, 10:34 AM",
+      action: "Reported by user",
+      description: "Issue was initially reported by citizen",
+      type: "created"
+    },
+    {
+      id: "2", 
+      date: "July 26, 09:00 AM",
+      action: "Assigned to municipal worker",
+      description: "City maintenance team assigned to investigate",
+      type: "assigned"
+    },
+    {
+      id: "3",
+      date: "July 28, 04:15 PM", 
+      action: "Marked 'In Progress'",
+      description: "Work has begun on resolving the issue",
+      type: "progress"
+    }
+  ];
+};
 
 export default function IssueDetail() {
   const [, params] = useRoute("/issue/:id");
-  const [isFollowing, setIsFollowing] = useState(false);
+  const { toast } = useToastNotifications();
   
   const issueId = params?.id;
   const issue = mockIssues.find(i => i.id === issueId);
   const reporter = issue?.reporterId ? mockUsers.find(u => u.id === issue.reporterId) : null;
-  const comments = mockComments.filter(c => c.issueId === issueId);
-  const statusHistory = mockStatusHistory.filter(s => s.issueId === issueId);
+  const activityTimeline = generateActivityTimeline(issueId || "");
 
   if (!issue) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Issue Not Found</h1>
-            <Link href="/">
-              <Button variant="outline">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Map
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const statusColor = getStatusColor(issue.status);
-  const categoryIcon = getCategoryIcon(issue.category);
-  
-  const getStatusLabel = (status: string) => {
-    return status.charAt(0).toUpperCase() + status.slice(1).replace("-", " ");
-  };
-
-  const handleFollowToggle = () => {
-    setIsFollowing(!isFollowing);
-    // TODO: Submit follow/unfollow to backend
-  };
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: issue.title,
-        text: issue.description,
-        url: window.location.href,
-      });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      // TODO: Show toast notification
-    }
-  };
-
-  const handleUpvote = () => {
-    // TODO: Submit upvote to backend
-    console.log("Upvote issue:", issue.id);
-  };
-
-  const handlePostComment = (content: string, parentId?: string) => {
-    // TODO: Submit comment to backend
-    console.log("Post comment:", { content, parentId, issueId: issue.id });
-  };
-
-  const handleLikeComment = (commentId: string) => {
-    // TODO: Submit comment like to backend
-    console.log("Like comment:", commentId);
-  };
-
-  const handleFlagComment = (commentId: string) => {
-    // TODO: Submit comment flag to backend
-    console.log("Flag comment:", commentId);
-  };
-
-  return (
-    <div className="min-h-screen bg-background transition-colors">
-      <Header />
-      
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Back button */}
-        <div className="mb-6">
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-foreground mb-4">Issue Not Found</h1>
           <Link href="/">
-            <Button variant="outline" size="sm">
+            <Button variant="outline">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Map
             </Button>
           </Link>
         </div>
+      </div>
+    );
+  }
 
-        {/* Issue header */}
-        <div className="bg-card rounded-xl shadow-sm border border-border p-6 mb-6 transition-colors">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex-1">
-              <div className="flex items-center space-x-3 mb-2">
-                <span className="text-3xl">{categoryIcon}</span>
-                <Badge className={`${statusColor} text-white`}>
-                  <span className="w-2 h-2 bg-white rounded-full mr-2"></span>
-                  {getStatusLabel(issue.status)}
-                </Badge>
-              </div>
-              <h1 className="text-3xl font-bold text-foreground mb-2">
-                {issue.title}
-              </h1>
-              <p className="text-muted-foreground">{issue.description}</p>
-            </div>
-            <div className="ml-6 flex flex-col space-y-2">
-              <Button
-                onClick={handleFollowToggle}
-                className={`${isFollowing ? "bg-gray-100 text-gray-700 hover:bg-gray-200" : "bg-civic-blue hover:bg-civic-blue/90"}`}
-              >
-                <Bell className="h-4 w-4 mr-2" />
-                {isFollowing ? "Following" : "Follow"}
+  const handleEdit = () => {
+    toast().info("Edit Issue", "Edit functionality will be available soon.", 3000);
+  };
+
+  const handleDelete = () => {
+    toast().warning("Delete Issue", "Are you sure you want to delete this issue?", 3000);
+  };
+
+  const handleReportSpam = () => {
+    toast().warning("Report Spam", "Issue has been flagged for review.", 3000);
+  };
+
+  return (
+    <div className="min-h-screen bg-background transition-colors">
+      {/* Header Bar */}
+      <div className="bg-card border-b border-border px-6 py-4">
+        <div className="flex items-center justify-between max-w-4xl mx-auto">
+          <div className="flex items-center space-x-4">
+            <Link href="/">
+              <Button variant="ghost" size="sm">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                CivicTrack
               </Button>
-              <Button variant="outline" onClick={handleShare}>
-                <Share2 className="h-4 w-4 mr-2" />
-                Share
-              </Button>
-              <Button
-                variant="outline"
-                onClick={handleUpvote}
-                className="text-civic-blue border-civic-blue hover:bg-civic-blue hover:text-white"
-              >
-                <ArrowUp className="h-4 w-4 mr-2" />
-                {issue.upvotes}
-              </Button>
-            </div>
+            </Link>
           </div>
           
-          {/* Issue metadata */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center space-x-1">
-              <User className="h-4 w-4" />
-              <span>
-                Reported by {issue.isAnonymous ? "Anonymous" : reporter?.username || "Unknown"}
-              </span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <Clock className="h-4 w-4" />
-              <span>{formatTimeAgo(issue.createdAt || new Date())}</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <MapPin className="h-4 w-4" />
-              <span>{issue.address}</span>
-            </div>
+          <div className="flex items-center space-x-2">
+            <Button variant="ghost" size="sm" onClick={handleEdit}>
+              <Edit className="h-4 w-4 mr-1" />
+              Edit
+            </Button>
+            <Button variant="ghost" size="sm" onClick={handleDelete}>
+              <Trash2 className="h-4 w-4 mr-1" />
+              Delete
+            </Button>
+            <Button variant="ghost" size="icon">
+              <Share2 className="h-4 w-4" />
+            </Button>
           </div>
         </div>
-        
-        {/* Issue images */}
-        {issue.images && issue.images.length > 0 && (
-          <div className="bg-card rounded-xl shadow-sm border border-border p-6 mb-6 transition-colors">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Photos</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {issue.images.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={`Issue photo ${index + 1}`}
-                  className="rounded-lg shadow-sm w-full h-48 object-cover"
-                />
-              ))}
-            </div>
-          </div>
-        )}
-        
-        {/* Status Timeline */}
-        <div className="mb-6">
-          <IssueTimeline 
-            statusHistory={statusHistory}
-            currentStatus={issue.status}
+      </div>
+
+      {/* Filters Bar */}
+      <div className="bg-card border-b border-border px-6 py-3">
+        <div className="flex items-center space-x-4 max-w-4xl mx-auto">
+          <select className="bg-background border border-border rounded px-3 py-1 text-sm">
+            <option>Category</option>
+            <option>Garbage</option>
+            <option>Water</option>
+            <option>Roads</option>
+          </select>
+          <select className="bg-background border border-border rounded px-3 py-1 text-sm">
+            <option>Status</option>
+            <option>Reported</option>
+            <option>In Progress</option>
+            <option>Resolved</option>
+          </select>
+          <select className="bg-background border border-border rounded px-3 py-1 text-sm">
+            <option>Distance</option>
+            <option>1km</option>
+            <option>5km</option>
+            <option>10km</option>
+          </select>
+          <input 
+            type="text" 
+            placeholder="Search Issues"
+            className="bg-background border border-border rounded px-3 py-1 text-sm ml-auto w-64"
           />
         </div>
-        
-        {/* Comments Section */}
-        <CommentsSection
-          comments={comments}
-          users={mockUsers}
-          onPostComment={handlePostComment}
-          onLikeComment={handleLikeComment}
-          onFlagComment={handleFlagComment}
-        />
+      </div>
+
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Hero Image */}
+            <div className="relative h-64 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 rounded-lg overflow-hidden">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-6xl opacity-60">{getCategoryIcon(issue.category)}</span>
+              </div>
+              <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm rounded-full px-3 py-1">
+                <h1 className="text-lg font-bold text-foreground">Pothole on main road</h1>
+              </div>
+            </div>
+
+            {/* Status and Date */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <Badge className={`${getStatusColor(issue.status)} text-white px-3 py-1`}>
+                  <span className="w-2 h-2 bg-white rounded-full mr-2"></span>
+                  In Progress
+                </Badge>
+                <span className="text-muted-foreground">Reported by: Anonymous</span>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleReportSpam}
+                className="text-civic-red border-civic-red hover:bg-civic-red hover:text-white"
+              >
+                Report Spam
+              </Button>
+            </div>
+
+            {/* Date and Description */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2 text-muted-foreground">
+                <Calendar className="h-4 w-4" />
+                <span>Jun 02, 2025 - 10:34 AM</span>
+              </div>
+              
+              <div className="text-foreground leading-relaxed">
+                <p>The main road in c.g road ,ahmeadlbad, is riddled with potholes, making it dangerous and difficult to travel on.</p>
+              </div>
+            </div>
+
+            {/* Activity Timeline */}
+            <Card>
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Activity</h3>
+                <div className="space-y-4">
+                  {activityTimeline.map((activity, index) => (
+                    <div key={activity.id} className="flex items-start space-x-3">
+                      <div className="flex-shrink-0 w-2 h-2 bg-civic-blue rounded-full mt-2"></div>
+                      <div className="flex-1">
+                        <div className="text-sm text-muted-foreground">{activity.date}</div>
+                        <div className="text-foreground font-medium">{activity.action}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Status Card */}
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-foreground">Status</span>
+                  <Badge className="bg-civic-amber text-white">
+                    <Clock className="h-3 w-3 mr-1" />
+                    In Progress
+                  </Badge>
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  Reported by: Anonymous
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Location Card */}
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center space-x-2 mb-3">
+                  <MapPin className="h-4 w-4 text-civic-blue" />
+                  <span className="text-sm font-medium text-foreground">Location</span>
+                </div>
+                <div className="text-sm text-muted-foreground mb-3">
+                  C.G road ,<br />
+                  ahmeadabad,<br />
+                  gujarat
+                </div>
+                
+                {/* Mini Map */}
+                <div className="h-32 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 rounded relative overflow-hidden">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <MapPin className="h-8 w-8 text-red-500" />
+                  </div>
+                  {/* Grid pattern overlay */}
+                  <div className="absolute inset-0 opacity-20">
+                    <div className="grid grid-cols-6 grid-rows-6 h-full w-full">
+                      {Array.from({ length: 36 }).map((_, i) => (
+                        <div key={i} className="border border-gray-300"></div>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Location labels */}
+                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-1 rounded">
+                    Ahmeadabad
+                  </div>
+                  <div className="absolute bottom-2 right-2 bg-blue-500 text-white text-xs px-1 rounded">
+                    Surat
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
