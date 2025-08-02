@@ -9,6 +9,8 @@ import { useToastNotifications } from "@/hooks/use-toast-notifications";
 import Home from "@/pages/home";
 import IssueDetail from "@/pages/issue-detail";
 import AdminDashboard from "@/pages/admin";
+import Login from "@/pages/login";
+import Signup from "@/pages/signup";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -17,6 +19,8 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/issue/:id" component={IssueDetail} />
       <Route path="/admin" component={AdminDashboard} />
+      <Route path="/login" component={Login} />
+      <Route path="/signup" component={Signup} />
       <Route component={NotFound} />
     </Switch>
   );

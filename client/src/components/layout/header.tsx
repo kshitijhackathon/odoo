@@ -50,13 +50,17 @@ export function Header() {
             <Button variant="ghost" size="icon" aria-label="Notifications">
               <Bell className="h-5 w-5" />
             </Button>
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
-                <User className="text-gray-600 dark:text-gray-300 text-sm" />
-              </div>
-              <span className="text-sm font-medium text-foreground hidden sm:block">
-                Sarah Chen
-              </span>
+            <div className="flex items-center space-x-3">
+              <Link href="/login">
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-civic-blue">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button size="sm" className="bg-civic-emerald hover:bg-civic-emerald/90 text-white">
+                  Sign Up
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
