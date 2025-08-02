@@ -83,7 +83,7 @@ export default function IssueDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background transition-colors">
       <Header />
       
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -98,7 +98,7 @@ export default function IssueDetail() {
         </div>
 
         {/* Issue header */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="bg-card rounded-xl shadow-sm border border-border p-6 mb-6 transition-colors">
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
               <div className="flex items-center space-x-3 mb-2">
@@ -108,10 +108,10 @@ export default function IssueDetail() {
                   {getStatusLabel(issue.status)}
                 </Badge>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <h1 className="text-3xl font-bold text-foreground mb-2">
                 {issue.title}
               </h1>
-              <p className="text-gray-600">{issue.description}</p>
+              <p className="text-muted-foreground">{issue.description}</p>
             </div>
             <div className="ml-6 flex flex-col space-y-2">
               <Button
@@ -137,7 +137,7 @@ export default function IssueDetail() {
           </div>
           
           {/* Issue metadata */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center space-x-1">
               <User className="h-4 w-4" />
               <span>
@@ -146,7 +146,7 @@ export default function IssueDetail() {
             </div>
             <div className="flex items-center space-x-1">
               <Clock className="h-4 w-4" />
-              <span>{formatTimeAgo(issue.createdAt)}</span>
+              <span>{formatTimeAgo(issue.createdAt || new Date())}</span>
             </div>
             <div className="flex items-center space-x-1">
               <MapPin className="h-4 w-4" />
@@ -157,8 +157,8 @@ export default function IssueDetail() {
         
         {/* Issue images */}
         {issue.images && issue.images.length > 0 && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Photos</h3>
+          <div className="bg-card rounded-xl shadow-sm border border-border p-6 mb-6 transition-colors">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Photos</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {issue.images.map((image, index) => (
                 <img

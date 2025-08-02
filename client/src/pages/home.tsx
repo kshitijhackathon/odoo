@@ -8,6 +8,7 @@ import { IssueList } from "@/components/issues/issue-list";
 import { ReportIssueModal } from "@/components/issues/report-issue-modal";
 import { Button } from "@/components/ui/button";
 import { mockIssues, mockUsers } from "@/lib/mock-data";
+import { useToastNotifications } from "@/hooks/use-toast-notifications";
 import type { InsertIssue } from "@shared/schema";
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
     status: "all", 
     distance: "5km",
   });
+  const { toast } = useToastNotifications();
 
   const handleIssueClick = (issueId: string) => {
     setLocation(`/issue/${issueId}`);
@@ -25,6 +27,11 @@ export default function Home() {
 
   const handleReportSubmit = (data: InsertIssue & { images?: string[]; anonymous?: boolean }) => {
     console.log("Report submitted:", data);
+    toast().success(
+      "Issue reported successfully!",
+      "Your report has been submitted and will be reviewed by the city.",
+      4000
+    );
     // TODO: Submit to backend
   };
 
@@ -33,7 +40,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background transition-colors">
       <Header />
       
       <main className="relative">

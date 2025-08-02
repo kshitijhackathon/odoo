@@ -6,6 +6,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Comment, User } from "@shared/schema";
 import { formatTimeAgo } from "@/lib/mock-data";
 
+interface CommentFormData {
+  content: string;
+}
+
 interface CommentsSectionProps {
   comments: Comment[];
   users: User[];
@@ -22,14 +26,14 @@ export function CommentsSection({
   onFlagComment 
 }: CommentsSectionProps) {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<CommentFormData>();
 
   const getUserById = (userId: string | null) => {
     if (!userId) return null;
     return users.find(user => user.id === userId);
   };
 
-  const handlePostComment = (data: { content: string }) => {
+  const handlePostComment = (data: CommentFormData) => {
     onPostComment(data.content, replyingTo || undefined);
     reset();
     setReplyingTo(null);
@@ -63,19 +67,19 @@ export function CommentsSection({
           </div>
           <div className="flex-1">
             <div className="flex items-center space-x-2 mb-1">
-              <span className="font-medium text-gray-900">
+              <span className="font-medium text-foreground">
                 {author?.username || "Anonymous"}
               </span>
-              <span className="text-xs text-gray-500">
-                {formatTimeAgo(comment.createdAt)}
+              <span className="text-xs text-muted-foreground">
+                {formatTimeAgo(comment.createdAt || new Date())}
               </span>
             </div>
-            <p className="text-gray-700 text-sm mb-2">{comment.content}</p>
+            <p className="text-foreground text-sm mb-2">{comment.content}</p>
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-xs text-gray-500 hover:text-civic-blue p-0"
+                className="text-xs text-muted-foreground hover:text-civic-blue p-0"
                 onClick={() => onLikeComment(comment.id)}
               >
                 <ThumbsUp className="h-3 w-3 mr-1" />
@@ -85,7 +89,7 @@ export function CommentsSection({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-xs text-gray-500 hover:text-civic-blue p-0"
+                  className="text-xs text-muted-foreground hover:text-civic-blue p-0"
                   onClick={() => handleReply(comment.id)}
                 >
                   <Reply className="h-3 w-3 mr-1" />
@@ -95,7 +99,7 @@ export function CommentsSection({
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-xs text-gray-500 hover:text-red-500 p-0"
+                className="text-xs text-muted-foreground hover:text-red-500 p-0"
                 onClick={() => onFlagComment(comment.id)}
               >
                 <Flag className="h-3 w-3 mr-1" />
@@ -152,8 +156,8 @@ export function CommentsSection({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+    <div className="bg-card rounded-xl shadow-sm border border-border p-6 transition-colors">
+      <h3 className="text-lg font-semibold text-foreground mb-4">
         Comments ({comments.length})
       </h3>
       

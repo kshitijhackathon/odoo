@@ -3,55 +3,60 @@
 @tailwind utilities;
 
 :root {
-  --background: hsl(0, 0%, 100%);
-  --foreground: hsl(20, 14.3%, 4.1%);
-  --muted: hsl(60, 4.8%, 95.9%);
-  --muted-foreground: hsl(25, 5.3%, 44.7%);
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(20, 14.3%, 4.1%);
-  --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(20, 14.3%, 4.1%);
-  --border: hsl(20, 5.9%, 90%);
-  --input: hsl(20, 5.9%, 90%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(60, 4.8%, 95.9%);
-  --secondary-foreground: hsl(24, 9.8%, 10%);
-  --accent: hsl(60, 4.8%, 95.9%);
-  --accent-foreground: hsl(24, 9.8%, 10%);
-  --destructive: hsl(0, 84.2%, 60.2%);
-  --destructive-foreground: hsl(60, 9.1%, 97.8%);
-  --ring: hsl(20, 14.3%, 4.1%);
+  --background: 249, 250, 251; /* Snow White #F9FAFB */
+  --foreground: 30, 41, 59; /* Dark Slate #1E293B */
+  --muted: 241, 245, 249; /* Light Gray #F1F5F9 */
+  --muted-foreground: 203, 213, 225; /* Slate Gray #CBD5E1 */
+  --popover: 249, 250, 251;
+  --popover-foreground: 30, 41, 59;
+  --card: 241, 245, 249; /* Light Gray #F1F5F9 */
+  --card-foreground: 30, 41, 59;
+  --border: 203, 213, 225; /* Slate Gray #CBD5E1 */
+  --input: 203, 213, 225;
+  --primary: 37, 99, 235; /* Civic Blue #2563EB */
+  --primary-foreground: 255, 255, 255;
+  --secondary: 241, 245, 249;
+  --secondary-foreground: 30, 41, 59;
+  --accent: 241, 245, 249;
+  --accent-foreground: 30, 41, 59;
+  --destructive: 239, 68, 68; /* Red #EF4444 */
+  --destructive-foreground: 255, 255, 255;
+  --ring: 37, 99, 235;
   --radius: 0.5rem;
   
   /* CivicTrack custom colors */
-  --civic-blue: hsl(207, 90%, 54%);
-  --civic-amber: hsl(35, 91%, 49%);
-  --civic-emerald: hsl(158, 64%, 52%);
-  --civic-red: hsl(0, 84%, 60%);
+  --civic-blue: 37, 99, 235; /* #2563EB */
+  --civic-amber: 245, 158, 11; /* Orange Amber #F59E0B */
+  --civic-emerald: 16, 185, 129; /* Map Green #10B981 */
+  --civic-red: 239, 68, 68; /* Red #EF4444 */
+  --civic-light-green: 209, 250, 229; /* Light Green #D1FAE5 */
+  --civic-success: 16, 185, 129;
 }
 
 .dark {
-  --background: hsl(240, 10%, 3.9%);
-  --foreground: hsl(0, 0%, 98%);
-  --muted: hsl(240, 3.7%, 15.9%);
-  --muted-foreground: hsl(240, 5%, 64.9%);
-  --popover: hsl(240, 10%, 3.9%);
-  --popover-foreground: hsl(0, 0%, 98%);
-  --card: hsl(240, 10%, 3.9%);
-  --card-foreground: hsl(0, 0%, 98%);
-  --border: hsl(240, 3.7%, 15.9%);
-  --input: hsl(240, 3.7%, 15.9%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(240, 3.7%, 15.9%);
-  --secondary-foreground: hsl(0, 0%, 98%);
-  --accent: hsl(240, 3.7%, 15.9%);
-  --accent-foreground: hsl(0, 0%, 98%);
-  --destructive: hsl(0, 62.8%, 30.6%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(240, 4.9%, 83.9%);
+  --background: 0, 0, 0; /* Pure Black #000000 */
+  --foreground: 255, 255, 255; /* White */
+  --muted: 31, 41, 55; /* Dark gray for muted areas */
+  --muted-foreground: 156, 163, 175; /* Light gray for muted text */
+  --popover: 0, 0, 0;
+  --popover-foreground: 255, 255, 255;
+  --card: 17, 24, 39; /* Very dark gray for cards */
+  --card-foreground: 255, 255, 255;
+  --border: 55, 65, 81; /* Dark border */
+  --input: 55, 65, 81;
+  --primary: 37, 99, 235; /* Keep civic blue for contrast */
+  --primary-foreground: 255, 255, 255;
+  --secondary: 31, 41, 55;
+  --secondary-foreground: 255, 255, 255;
+  --accent: 31, 41, 55;
+  --accent-foreground: 255, 255, 255;
+  --destructive: 239, 68, 68;
+  --destructive-foreground: 255, 255, 255;
+  --ring: 37, 99, 235;
   --radius: 0.5rem;
+  
+  /* Dark mode adjustments for custom colors */
+  --civic-light-green: 6, 78, 59; /* Darker green for dark mode */
 }
 
 @layer base {
@@ -60,33 +65,93 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased transition-colors duration-300;
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+  }
+  
+  /* Updated component base styles */
+  .bg-background {
+    background-color: rgb(var(--background));
+  }
+  
+  .bg-card {
+    background-color: rgb(var(--card));
+  }
+  
+  .text-foreground {
+    color: rgb(var(--foreground));
+  }
+  
+  .text-muted-foreground {
+    color: rgb(var(--muted-foreground));
+  }
+  
+  .border-border {
+    border-color: rgb(var(--border));
   }
 }
 
 @layer utilities {
   .civic-blue {
-    color: var(--civic-blue);
+    color: rgb(var(--civic-blue));
   }
   .bg-civic-blue {
-    background-color: var(--civic-blue);
+    background-color: rgb(var(--civic-blue));
   }
   .civic-amber {
-    color: var(--civic-amber);
+    color: rgb(var(--civic-amber));
   }
   .bg-civic-amber {
-    background-color: var(--civic-amber);
+    background-color: rgb(var(--civic-amber));
   }
   .civic-emerald {
-    color: var(--civic-emerald);
+    color: rgb(var(--civic-emerald));
   }
   .bg-civic-emerald {
-    background-color: var(--civic-emerald);
+    background-color: rgb(var(--civic-emerald));
   }
   .civic-red {
-    color: var(--civic-red);
+    color: rgb(var(--civic-red));
   }
   .bg-civic-red {
-    background-color: var(--civic-red);
+    background-color: rgb(var(--civic-red));
+  }
+  .bg-civic-light-green {
+    background-color: rgb(var(--civic-light-green));
+  }
+  .bg-civic-success {
+    background-color: rgb(var(--civic-success));
+  }
+  
+  /* Animation utilities */
+  .animate-toast-in {
+    animation: toast-in 0.3s ease-out;
+  }
+  
+  .animate-toast-out {
+    animation: toast-out 0.2s ease-in;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-100%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%) scale(0.9);
   }
 }

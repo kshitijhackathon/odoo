@@ -25,7 +25,7 @@ export function IssueCard({ issue, reporter, onIssueClick, onUpvote, onFlag }: I
     <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer">
       <div className="relative h-48" onClick={() => onIssueClick(issue.id)}>
         <img 
-          src={issue.images[0] || "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"} 
+          src={(issue.images && issue.images[0]) || "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300"} 
           alt={issue.title}
           className="w-full h-full object-cover"
         />
@@ -43,7 +43,7 @@ export function IssueCard({ issue, reporter, onIssueClick, onUpvote, onFlag }: I
       <CardContent className="p-4">
         <div className="flex items-start justify-between mb-2">
           <h3 
-            className="text-lg font-semibold text-gray-900 line-clamp-2 flex-1 cursor-pointer"
+            className="text-lg font-semibold text-foreground line-clamp-2 flex-1 cursor-pointer"
             onClick={() => onIssueClick(issue.id)}
           >
             {issue.title}
@@ -62,7 +62,7 @@ export function IssueCard({ issue, reporter, onIssueClick, onUpvote, onFlag }: I
           </Button>
         </div>
         
-        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+        <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
           {issue.description}
         </p>
         
@@ -78,12 +78,12 @@ export function IssueCard({ issue, reporter, onIssueClick, onUpvote, onFlag }: I
                   <CheckCircle className="text-white h-3 w-3" />
                 </div>
               )}
-              <span className="text-xs font-medium text-gray-700">
+              <span className="text-xs font-medium text-foreground">
                 {issue.isAnonymous ? "Anonymous" : reporter?.username || "Unknown"}
               </span>
             </div>
-            <span className="text-gray-400">·</span>
-            <span className="text-xs text-gray-500">
+            <span className="text-muted-foreground">·</span>
+            <span className="text-xs text-muted-foreground">
               {/* Mock distance calculation */}
               {Math.floor(Math.random() * 5) + 0.1} km away
             </span>
@@ -95,7 +95,7 @@ export function IssueCard({ issue, reporter, onIssueClick, onUpvote, onFlag }: I
             <Button
               variant="ghost"
               size="sm"
-              className="text-gray-600 hover:text-civic-blue p-0"
+              className="text-muted-foreground hover:text-civic-blue p-0"
               onClick={(e) => {
                 e.stopPropagation();
                 onUpvote(issue.id);
@@ -107,7 +107,7 @@ export function IssueCard({ issue, reporter, onIssueClick, onUpvote, onFlag }: I
             <Button
               variant="ghost"
               size="sm"
-              className="text-gray-600 hover:text-civic-blue p-0"
+              className="text-muted-foreground hover:text-civic-blue p-0"
               onClick={() => onIssueClick(issue.id)}
             >
               <MessageCircle className="h-4 w-4 mr-1" />
@@ -117,8 +117,8 @@ export function IssueCard({ issue, reporter, onIssueClick, onUpvote, onFlag }: I
               </span>
             </Button>
           </div>
-          <span className="text-xs text-gray-500">
-            {formatTimeAgo(issue.createdAt)}
+          <span className="text-xs text-muted-foreground">
+            {formatTimeAgo(issue.createdAt || new Date())}
           </span>
         </div>
       </CardContent>

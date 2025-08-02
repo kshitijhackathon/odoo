@@ -57,11 +57,11 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
   ];
 
   return (
-    <div className="bg-white border-b border-gray-200 px-4 py-4">
+    <div className="bg-card border-b border-border px-4 py-4 transition-colors">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-wrap gap-3">
           <div className="flex items-center space-x-2">
-            <span className="text-sm font-medium text-gray-700">Filters:</span>
+            <span className="text-sm font-medium text-foreground">Filters:</span>
           </div>
           
           {/* Category Filters */}
@@ -83,7 +83,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
           </div>
           
           {/* Status Filters */}
-          <div className="flex flex-wrap gap-2 border-l border-gray-200 pl-3">
+          <div className="flex flex-wrap gap-2 border-l border-border pl-3">
             {statuses.map((status) => (
               <Badge
                 key={status.id}
@@ -104,7 +104,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
           </div>
           
           {/* Distance Filter */}
-          <div className="border-l border-gray-200 pl-3">
+          <div className="border-l border-border pl-3">
             <Select value={distance} onValueChange={(value) => handleFilterUpdate("distance", value)}>
               <SelectTrigger className="w-24 h-8">
                 <SelectValue />

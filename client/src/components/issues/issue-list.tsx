@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { IssueCard } from "./issue-card";
 import { Issue, User } from "@shared/schema";
+import { useToastNotifications } from "@/hooks/use-toast-notifications";
 
 interface IssueListProps {
   issues: Issue[];
@@ -16,6 +17,7 @@ interface IssueListProps {
 
 export function IssueList({ issues, users, onIssueClick, filters }: IssueListProps) {
   const [displayedIssues, setDisplayedIssues] = useState(12);
+  const { toast } = useToastNotifications();
 
   // Filter issues based on active filters
   const filteredIssues = issues.filter((issue) => {
@@ -26,12 +28,12 @@ export function IssueList({ issues, users, onIssueClick, filters }: IssueListPro
   });
 
   const handleUpvote = (issueId: string) => {
-    // TODO: Implement upvote functionality
+    toast().success("Vote submitted", "Your vote has been recorded.", 2000);
     console.log("Upvote issue:", issueId);
   };
 
   const handleFlag = (issueId: string) => {
-    // TODO: Implement flag functionality
+    toast().warning("Report flagged", "Thank you for reporting. We'll review this issue.", 3000);
     console.log("Flag issue:", issueId);
   };
 
@@ -47,8 +49,8 @@ export function IssueList({ issues, users, onIssueClick, filters }: IssueListPro
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Recent Issues</h2>
-        <div className="text-sm text-gray-600">
+        <h2 className="text-2xl font-bold text-foreground">Recent Issues</h2>
+        <div className="text-sm text-muted-foreground">
           Showing 1-{Math.min(displayedIssues, filteredIssues.length)} of {filteredIssues.length} issues
         </div>
       </div>

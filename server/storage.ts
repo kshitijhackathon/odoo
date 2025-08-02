@@ -132,6 +132,7 @@ export class MemStorage implements IStorage {
     const issue: Issue = {
       ...insertIssue,
       id,
+      status: insertIssue.status || "reported",
       upvotes: 0,
       flagCount: 0,
       isHidden: false,
@@ -171,7 +172,7 @@ export class MemStorage implements IStorage {
     const issue = this.issues.get(id);
     if (!issue) return undefined;
 
-    const updatedIssue = { ...issue, upvotes: issue.upvotes + 1 };
+    const updatedIssue = { ...issue, upvotes: (issue.upvotes || 0) + 1 };
     this.issues.set(id, updatedIssue);
     return updatedIssue;
   }
@@ -180,10 +181,11 @@ export class MemStorage implements IStorage {
     const issue = this.issues.get(id);
     if (!issue) return undefined;
 
+    const currentFlags = issue.flagCount || 0;
     const updatedIssue = { 
       ...issue, 
-      flagCount: issue.flagCount + 1,
-      isHidden: issue.flagCount + 1 >= 3 // Auto-hide after 3 flags
+      flagCount: currentFlags + 1,
+      isHidden: currentFlags + 1 >= 3 // Auto-hide after 3 flags
     };
     this.issues.set(id, updatedIssue);
     return updatedIssue;
@@ -201,6 +203,8 @@ export class MemStorage implements IStorage {
     const comment: Comment = {
       ...insertComment,
       id,
+      authorId: insertComment.authorId || null,
+      parentId: insertComment.parentId || null,
       likes: 0,
       flagCount: 0,
       isHidden: false,
@@ -214,7 +218,7 @@ export class MemStorage implements IStorage {
     const comment = this.comments.get(id);
     if (!comment) return undefined;
 
-    const updatedComment = { ...comment, likes: comment.likes + 1 };
+    const updatedComment = { ...comment, likes: (comment.likes || 0) + 1 };
     this.comments.set(id, updatedComment);
     return updatedComment;
   }
@@ -223,10 +227,11 @@ export class MemStorage implements IStorage {
     const comment = this.comments.get(id);
     if (!comment) return undefined;
 
+    const currentFlags = comment.flagCount || 0;
     const updatedComment = { 
       ...comment, 
-      flagCount: comment.flagCount + 1,
-      isHidden: comment.flagCount + 1 >= 3
+      flagCount: currentFlags + 1,
+      isHidden: currentFlags + 1 >= 3
     };
     this.comments.set(id, updatedComment);
     return updatedComment;
@@ -264,7 +269,7 @@ export class MemStorage implements IStorage {
   async getStatusHistoryByIssueId(issueId: string): Promise<StatusHistory[]> {
     return Array.from(this.statusHistory.values()).filter(
       history => history.issueId === issueId
-    ).sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+    ).sort((a, b) => (a.createdAt?.getTime() || 0) - (b.createdAt?.getTime() || 0));
   }
 
   async createStatusHistory(insertStatusHistory: InsertStatusHistory): Promise<StatusHistory> {
@@ -272,6 +277,7 @@ export class MemStorage implements IStorage {
     const statusHistory: StatusHistory = {
       ...insertStatusHistory,
       id,
+      description: insertStatusHistory.description || null,
       createdAt: new Date(),
     };
     this.statusHistory.set(id, statusHistory);

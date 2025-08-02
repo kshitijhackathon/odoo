@@ -54,8 +54,8 @@ export function IssueTimeline({ statusHistory, currentStatus }: IssueTimelinePro
   });
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Status Timeline</h3>
+    <div className="bg-card rounded-xl shadow-sm border border-border p-6 transition-colors">
+      <h3 className="text-lg font-semibold text-foreground mb-4">Status Timeline</h3>
       <div className="space-y-4">
         {timeline.map((item, index) => (
           <div 
@@ -69,17 +69,17 @@ export function IssueTimeline({ statusHistory, currentStatus }: IssueTimelinePro
             </div>
             <div className="flex-1">
               <div className="flex items-center space-x-2 mb-1">
-                <span className="font-medium text-gray-900">
+                <span className="font-medium text-foreground">
                   {getStatusLabel(item.status)}
                 </span>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-muted-foreground">
                   {item.isCompleted && item.historyItem
-                    ? formatTimeAgo(item.historyItem.createdAt)
+                    ? formatTimeAgo(item.historyItem.createdAt || new Date())
                     : "Pending"
                   }
                 </span>
               </div>
-              <p className="text-gray-600 text-sm">
+              <p className="text-muted-foreground text-sm">
                 {item.historyItem?.description || 
                   (item.status === "in-progress" ? "City maintenance crew assigned to address the issue." :
                    item.status === "resolved" ? "Issue successfully resolved and verified." :
