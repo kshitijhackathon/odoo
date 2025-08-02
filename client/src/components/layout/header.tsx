@@ -10,13 +10,19 @@ export function Header() {
     <header className="bg-card shadow-sm border-b border-border sticky top-0 z-40 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
             <Link href="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-civic-blue rounded-lg flex items-center justify-center">
                 <Building className="text-white text-sm" />
               </div>
               <span className="text-xl font-bold text-foreground">CivicTrack</span>
             </Link>
+            <div className="hidden md:flex items-center space-x-2 text-sm text-muted-foreground">
+              <div className="w-6 h-6 bg-civic-emerald rounded-full flex items-center justify-center">
+                <span className="text-white text-xs font-bold">D</span>
+              </div>
+              <span className="font-medium text-foreground">Determined Crow</span>
+            </div>
           </div>
           
           <nav className="hidden md:flex items-center space-x-6">
@@ -62,13 +68,11 @@ export function Header() {
             </Button>
             <div className="flex items-center space-x-3">
               <Link href="/login">
-                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-civic-blue">
-                  Sign In
-                </Button>
-              </Link>
-              <Link href="/signup">
-                <Button size="sm" className="bg-civic-emerald hover:bg-civic-emerald/90 text-white">
-                  Sign Up
+                <Button 
+                  size="sm" 
+                  className="bg-civic-blue hover:bg-civic-blue/90 text-white rounded-full px-6"
+                >
+                  Login
                 </Button>
               </Link>
             </div>
