@@ -89,7 +89,7 @@ export function ReportIssueModal({ open, onOpenChange, onSubmit }: ReportIssueMo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md max-h-screen overflow-y-auto bg-background border border-border rounded-2xl">
+      <DialogContent className="max-w-md max-h-screen overflow-y-auto bg-white dark:bg-gray-900 border border-border rounded-2xl shadow-2xl backdrop-blur-none">
         <DialogHeader className="pb-4">
           <DialogTitle className="flex items-center space-x-2 text-xl font-medium text-foreground">
             <Flag className="h-5 w-5 text-muted-foreground" />
