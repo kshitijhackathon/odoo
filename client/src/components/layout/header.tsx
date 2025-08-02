@@ -28,12 +28,22 @@ export function Header() {
             >
               Map
             </Link>
-            <a href="#" className="text-muted-foreground hover:text-civic-blue transition-colors font-medium">
+            <Link 
+              href="/my-reports"
+              className={`font-medium transition-colors ${
+                location === "/my-reports" ? "text-civic-blue" : "text-muted-foreground hover:text-civic-blue"
+              }`}
+            >
               My Reports
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-civic-blue transition-colors font-medium">
+            </Link>
+            <Link 
+              href="/activity"
+              className={`font-medium transition-colors ${
+                location === "/activity" ? "text-civic-blue" : "text-muted-foreground hover:text-civic-blue"
+              }`}
+            >
               Activity
-            </a>
+            </Link>
             <Link 
               href="/admin"
               className={`font-medium transition-colors flex items-center space-x-1 ${

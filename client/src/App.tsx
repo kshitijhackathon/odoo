@@ -11,6 +11,8 @@ import IssueDetail from "@/pages/issue-detail";
 import AdminDashboard from "@/pages/admin";
 import Login from "@/pages/login";
 import Signup from "@/pages/signup";
+import MyReports from "@/pages/my-reports";
+import Activity from "@/pages/activity";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -21,6 +23,8 @@ function Router() {
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
+      <Route path="/my-reports" component={MyReports} />
+      <Route path="/activity" component={Activity} />
       <Route component={NotFound} />
     </Switch>
   );
