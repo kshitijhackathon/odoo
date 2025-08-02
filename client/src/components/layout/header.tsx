@@ -1,10 +1,17 @@
+import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Building, Bell, User, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { NotificationDropdown } from "@/components/ui/notification-dropdown";
 
 export function Header() {
   const [location] = useLocation();
+  const [showNotifications, setShowNotifications] = useState(false);
+  
+  // Mock unread count - in real app this would come from state/API
+  const unreadNotifications = 2;
 
   return (
     <header className="bg-card shadow-sm border-b border-border sticky top-0 z-40 transition-colors">
@@ -63,9 +70,29 @@ export function Header() {
           
           <div className="flex items-center space-x-4">
             <ThemeToggle />
-            <Button variant="ghost" size="icon" aria-label="Notifications">
-              <Bell className="h-5 w-5" />
-            </Button>
+            <div className="relative">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                aria-label="Notifications"
+                onClick={() => setShowNotifications(!showNotifications)}
+                className="relative"
+              >
+                <Bell className="h-5 w-5" />
+                {unreadNotifications > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                  >
+                    {unreadNotifications}
+                  </Badge>
+                )}
+              </Button>
+              <NotificationDropdown 
+                isOpen={showNotifications}
+                onClose={() => setShowNotifications(false)}
+              />
+            </div>
             <div className="flex items-center space-x-3">
               <Link href="/login">
                 <Button 
